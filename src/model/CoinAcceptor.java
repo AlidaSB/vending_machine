@@ -1,17 +1,31 @@
 package model;
 
-public class CoinAcceptor {
-    private int amount;
+public class CoinAcceptor implements PaymentAcceptor {
+    private int balance;
 
-    public CoinAcceptor(int amount) {
-        this.amount = amount;
+    public CoinAcceptor() {
+        this.balance = 0;
     }
 
-    public int getAmount() {
-        return amount;
+    @Override
+    public void addFunds(int amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be positive.");
+        }
+        balance += amount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    @Override
+    public int getBalance() {
+        return balance;
+    }
+
+    @Override
+    public void deductFunds(int amount) throws IllegalArgumentException {
+        if (amount > balance) {
+            throw new IllegalArgumentException("Insufficient balance.");
+        }
+        balance -= amount;
     }
 }
+

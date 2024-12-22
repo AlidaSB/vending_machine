@@ -1,4 +1,7 @@
 package model;
 
-public class PaymentAcceptor {
+public interface PaymentAcceptor {
+    void addFunds(int amount);
+    int getBalance();
+    void deductFunds(int amount) throws IllegalArgumentException;
 }
