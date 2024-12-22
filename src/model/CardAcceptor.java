@@ -11,12 +11,12 @@ public class CardAcceptor implements PaymentAcceptor {
 
     @Override
     public void addFunds(int amount) {
-        System.out.println("Введите номер карты:");
+        System.out.println("Enter card number:");
         Scanner scanner = new Scanner(System.in);
         String cardNumber = scanner.nextLine();
-        System.out.println("Введите одноразовый пароль:");
+        System.out.println("Enter password:");
         String password = scanner.nextLine();
-        System.out.println("Оплата принята. Добавлено " + amount);
+        System.out.println("Payment accepted. Added " + amount);
         balance += amount;
     }
 

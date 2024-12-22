@@ -32,9 +32,9 @@ public class AppRunner {
     }
 
     private void startSimulation() {
-        print("Выберите способ оплаты:");
-        print("1. Монеты");
-        print("2. Банковская карта");
+        print("Select payment method:");
+        print("1. Coins");
+        print("2. Bank card");
         String choice = fromConsole();
 
         if ("1".equals(choice)) {
@@ -42,7 +42,7 @@ public class AppRunner {
         } else if ("2".equals(choice)) {
             paymentAcceptor = new CardAcceptor();
         } else {
-            print("Неверный выбор.");
+            print("Wrong choice.");
             return;
         }
 
@@ -52,10 +52,10 @@ public class AppRunner {
     }
 
     private void simulateVendingMachine() {
-        print("В автомате доступны:");
+        print("Available in the machine:");
         showProducts(products);
 
-        print("Монет на сумму: " + paymentAcceptor.getBalance());
+        print("Balance: " + paymentAcceptor.getBalance());
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
@@ -73,20 +73,23 @@ public class AppRunner {
     }
 
     private void chooseAction(UniversalArray<Product> products) {
-        print(" a - Пополнить баланс");
+        print(" a - Top up balance");
         showActions(products);
-        print(" h - Выйти");
+        print(" h - Exit");
         String action = fromConsole().substring(0, 1);
         if ("a".equalsIgnoreCase(action)) {
-            paymentAcceptor.addFunds(10);
-            print("Вы пополнили баланс на 10");
+            inputAndAddFunds();
+            return;
+        }else if ("h".equalsIgnoreCase(action)) {
+            print("Exiting...");
+            isExit = true;
             return;
         }
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
                     paymentAcceptor.deductFunds(products.get(i).getPrice());
-                    print("Вы купили " + products.get(i).getName());
+                    print("You bought " + products.get(i).getName());
                     break;
                 }
             }
@@ -94,10 +97,17 @@ public class AppRunner {
             if ("h".equalsIgnoreCase(action)) {
                 isExit = true;
             } else {
-                print("Недопустимая буква. Попробуйте еще раз.");
+                print("Invalid letter. Try again..");
                 chooseAction(products);
             }
         }
+    }
+
+    private void inputAndAddFunds() {
+        print("Enter the amount to top up your balance:");
+        int amount = new Scanner(System.in).nextInt();  // Используем int для целочисленной суммы
+        paymentAcceptor.addFunds(amount);
+        print("You have topped up your balance by " + amount);
     }
 
     private void showActions(UniversalArray<Product> products) {
@@ -120,3 +130,5 @@ public class AppRunner {
         System.out.println(msg);
     }
 }
+
+
